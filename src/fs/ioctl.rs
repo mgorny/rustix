@@ -11,7 +11,7 @@ use {
 
 use bitflags::bitflags;
 
-#[cfg(all(linux_kernel, not(any(target_arch = "sparc", target_arch = "sparc64"))))]
+#[cfg(linux_kernel)]
 use crate::fd::{AsRawFd as _, BorrowedFd};
 
 /// `ioctl(fd, BLKSSZGET)`—Returns the logical block size of a block device.
@@ -50,7 +50,7 @@ pub fn ioctl_blkpbszget<Fd: AsFd>(fd: Fd) -> io::Result<u32> {
 ///  - [Linux]
 ///
 /// [Linux]: https://man7.org/linux/man-pages/man2/ioctl_ficlone.2.html
-#[cfg(all(linux_kernel, not(any(target_arch = "sparc", target_arch = "sparc64"))))]
+#[cfg(linux_kernel)]
 #[inline]
 #[doc(alias = "FICLONE")]
 pub fn ioctl_ficlone<Fd: AsFd, SrcFd: AsFd>(fd: Fd, src_fd: SrcFd) -> io::Result<()> {
@@ -69,10 +69,10 @@ pub fn ext4_ioc_resize_fs<Fd: AsFd>(fd: Fd, blocks: u64) -> io::Result<()> {
     }
 }
 
-#[cfg(all(linux_kernel, not(any(target_arch = "sparc", target_arch = "sparc64"))))]
+#[cfg(linux_kernel)]
 struct Ficlone<'a>(BorrowedFd<'a>);
 
-#[cfg(all(linux_kernel, not(any(target_arch = "sparc", target_arch = "sparc64"))))]
+#[cfg(linux_kernel)]
 unsafe impl ioctl::Ioctl for Ficlone<'_> {
     type Output = ();
 
